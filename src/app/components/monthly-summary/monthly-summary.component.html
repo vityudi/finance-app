@@ -1,0 +1,21 @@
+<div class="monthly-summary">
+  <h2>Resumo Mensal {{currentYear}}</h2>
+  
+  <div class="months-grid">
+    <div *ngFor="let month of monthlyTotals" 
+         class="month-card"
+         [class.current-month]="isCurrentMonth(month.monthNumber)">
+      <div class="month-header">
+        {{month.monthName}}
+      </div>
+      <div class="month-content">
+        <div class="month-total">
+          {{month.total | currency:'BRL'}}
+        </div>
+        <div class="month-count">
+          {{month.count}} {{month.count === 1 ? 'despesa' : 'despesas'}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

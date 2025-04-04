@@ -3,20 +3,25 @@ import { CommonModule } from '@angular/common';
 import { ExpenseService } from '../../services/expense.service';
 import { Expense } from '../../models/expense.model';
 import { ExpenseFormComponent } from '../expense-form/expense-form.component';
+import { MonthlySummaryComponent } from '../monthly-summary/monthly-summary.component';
 
 @Component({
   selector: 'app-expenses-list',
   templateUrl: './expenses-list.component.html',
   styleUrls: ['./expenses-list.component.scss'],
   standalone: true,
-  imports: [CommonModule, ExpenseFormComponent]
+  imports: [CommonModule, ExpenseFormComponent, MonthlySummaryComponent]
 })
 export class ExpensesListComponent implements OnInit {
   expenses: Expense[] = [];
+  categories: string[] = [];
+  selectedCategory: string = '';
+  totalAmount: number = 0;
   editingExpense?: Expense;
-  showForm = false;
 
-  constructor(private expenseService: ExpenseService) {}
+  constructor(private expenseService: ExpenseService) {
+    this.categories = this.expenseService.getCategories();
+  }
 
   ngOnInit(): void {
     this.loadExpenses();
@@ -24,33 +29,36 @@ export class ExpensesListComponent implements OnInit {
 
   loadExpenses(): void {
     this.expenseService.getExpenses().subscribe(expenses => {
-      this.expenses = expenses.sort((a, b) => b.date.getTime() - a.date.getTime());
+      this.expenses = expenses;
+      this.calculateTotal();
     });
   }
 
-  onAddExpense(): void {
-    this.editingExpense = undefined;
-    this.showForm = true;
+  filterByCategory(category: string): void {
+    this.selectedCategory = category;
+    this.calculateTotal();
+  }
+
+  calculateTotal(): void {
+    const filteredExpenses = this.selectedCategory
+      ? this.expenses.filter(expense => expense.category === this.selectedCategory)
+      : this.expenses;
+    
+    this.totalAmount = filteredExpenses.reduce((total, expense) => total + expense.amount, 0);
   }
 
   onEditExpense(expense: Expense): void {
     this.editingExpense = expense;
-    this.showForm = true;
   }
 
-  async onDeleteExpense(id: string): Promise<void> {
+  deleteExpense(id: string): void {
     if (confirm('Tem certeza que deseja excluir esta despesa?')) {
-      await this.expenseService.deleteExpense(id);
+      this.expenseService.deleteExpense(id);
     }
   }
 
-  async onSubmitExpense(expense: Partial<Expense>): Promise<void> {
-    if (this.editingExpense) {
-      await this.expenseService.updateExpense(this.editingExpense.id!, expense);
-    } else {
-      await this.expenseService.addExpense(expense as Omit<Expense, 'id'>);
-    }
-    this.showForm = false;
+  onExpenseSaved(): void {
     this.editingExpense = undefined;
+    this.loadExpenses();
   }
 }

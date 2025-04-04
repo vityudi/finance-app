@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Expense } from '../../models/expense.model';
+import { ExpenseService } from '../../services/expense.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -12,15 +13,18 @@ import { CommonModule } from '@angular/common';
 })
 export class ExpenseFormComponent implements OnInit {
   @Input() expense?: Expense;
-  @Output() submitForm = new EventEmitter<Partial<Expense>>();
+  @Output() expenseSaved = new EventEmitter<void>();
 
   expenseForm: FormGroup;
-  categories = ['Alimentação', 'Transporte', 'Moradia', 'Saúde', 'Educação', 'Lazer', 'Outros'];
+  categories: string[] = [];
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private expenseService: ExpenseService
+  ) {
     this.expenseForm = this.fb.group({
-      description: ['', Validators.required],
-      amount: ['', [Validators.required, Validators.min(0)]],
+      description: ['', [Validators.required, Validators.minLength(3)]],
+      amount: ['', [Validators.required, Validators.min(0.01)]],
       date: ['', Validators.required],
       category: ['', Validators.required],
       notes: ['']
@@ -28,10 +32,14 @@ export class ExpenseFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.categories = this.expenseService.getCategories();
+    
     if (this.expense) {
+      this.expenseForm.patchValue(this.expense);
+    } else {
+      // Definir data padrão como hoje
       this.expenseForm.patchValue({
-        ...this.expense,
-        date: this.expense.date.toISOString().split('T')[0]
+        date: new Date().toISOString().split('T')[0]
       });
     }
   }
@@ -39,14 +47,23 @@ export class ExpenseFormComponent implements OnInit {
   onSubmit(): void {
     if (this.expenseForm.valid) {
       const formValue = this.expenseForm.value;
-      this.submitForm.emit({
-        ...formValue,
-        date: new Date(formValue.date),
-        amount: Number(formValue.amount)
-      });
-      if (!this.expense) {
-        this.expenseForm.reset();
+      
+      if (this.expense) {
+        // Atualizar despesa existente
+        this.expenseService.updateExpense({
+          ...this.expense,
+          ...formValue
+        });
+      } else {
+        // Adicionar nova despesa
+        this.expenseService.addExpense(formValue);
       }
+      
+      this.expenseForm.reset();
+      this.expenseForm.patchValue({
+        date: new Date().toISOString().split('T')[0]
+      });
+      this.expenseSaved.emit();
     }
   }
 }
