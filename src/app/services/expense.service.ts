@@ -79,19 +79,36 @@ export class ExpenseService {
   }
 
   // Converter string de data do formato DD/MM/YYYY para objeto Date
-  private parseDateFromExcel(dateStr: string): Date {
-    // Verificar se a data já está no formato ISO
-    if (dateStr.includes('T') || dateStr.includes('-')) {
-      return new Date(dateStr);
+  private parseDateFromExcel(dateStr: any): Date {
+    // Se for um número (formato serial do Excel)
+    if (typeof dateStr === 'number') {
+      // Converter número serial do Excel para data JavaScript
+      // O Excel usa 1 de janeiro de 1900 como data base (número 1)
+      // JavaScript usa 1 de janeiro de 1970 como data base
+      const excelDate = new Date(Math.round((dateStr - 25569) * 86400 * 1000));
+      return excelDate;
+    }
+
+    // Se for uma string
+    if (typeof dateStr === 'string') {
+      // Verificar se a data já está no formato ISO
+      if (dateStr.includes('T') || dateStr.includes('-')) {
+        return new Date(dateStr);
+      }
+      
+      // Tentar converter do formato DD/MM/YYYY
+      const parts = dateStr.split('/');
+      if (parts.length === 3) {
+        const day = parseInt(parts[0], 10);
+        const month = parseInt(parts[1], 10) - 1; // Mês é 0-indexed em JavaScript
+        const year = parseInt(parts[2], 10);
+        return new Date(year, month, day);
+      }
     }
     
-    // Tentar converter do formato DD/MM/YYYY
-    const parts = dateStr.split('/');
-    if (parts.length === 3) {
-      const day = parseInt(parts[0], 10);
-      const month = parseInt(parts[1], 10) - 1; // Mês é 0-indexed em JavaScript
-      const year = parseInt(parts[2], 10);
-      return new Date(year, month, day);
+    // Se for um objeto Date
+    if (dateStr instanceof Date) {
+      return dateStr;
     }
     
     // Fallback para o formato padrão
