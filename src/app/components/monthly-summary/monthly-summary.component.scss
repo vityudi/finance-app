@@ -1,13 +1,13 @@
 .monthly-summary {
-  margin: 2rem 0;
-  padding: 1.5rem;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: var(--spacing-xl) 0;
+  padding: var(--spacing-lg);
+  background-color: var(--white);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-md);
 
   h2 {
-    margin: 0 0 1.5rem 0;
-    color: #333;
+    margin: 0 0 var(--spacing-lg) 0;
+    color: var(--gray-800);
     font-size: 1.5rem;
     text-align: center;
   }
@@ -15,51 +15,51 @@
   .months-grid {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: 1rem;
+    gap: var(--spacing-md);
   }
 
   .month-card {
-    background-color: #f8f9fa;
-    border-radius: 6px;
+    background-color: var(--gray-100);
+    border-radius: var(--border-radius-md);
     overflow: hidden;
     transition: transform 0.2s ease-in-out;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-sm);
 
     &:hover {
       transform: translateY(-2px);
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+      box-shadow: var(--shadow-md);
     }
 
     &.current-month {
-      background-color: #e3f2fd;
-      border: 1px solid #90caf9;
+      background-color: var(--primary-light);
+      border: 1px solid var(--primary-color);
     }
   }
 
   .month-header {
-    background-color: #2196f3;
-    color: white;
-    padding: 0.75rem;
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: var(--spacing-sm);
     text-align: center;
     font-weight: 500;
   }
 
   .month-content {
-    padding: 1rem;
+    padding: var(--spacing-md);
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: var(--spacing-sm);
   }
 
   .month-total {
     font-size: 1.25rem;
     font-weight: 500;
-    color: #333;
+    color: var(--gray-800);
   }
 
   .month-count {
     font-size: 0.875rem;
-    color: #666;
+    color: var(--gray-600);
   }
 }
 

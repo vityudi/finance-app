@@ -1,0 +1,16 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: var(--gray-100);
+}
+
+main {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: var(--spacing-xl);
+  box-sizing: inherit;
+  position: relative;
+}
