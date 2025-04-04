@@ -1,1 +1,50 @@
-<p>expenses-list works!</p>
+<div class="expenses-container">
+  <div class="header">
+    <h1>Minhas Despesas</h1>
+    <button (click)="onAddExpense()" class="add-button">
+      Nova Despesa
+    </button>
+  </div>
+
+  <app-expense-form
+    *ngIf="showForm"
+    [expense]="editingExpense"
+    (submitForm)="onSubmitExpense($event)"
+  ></app-expense-form>
+
+  <div class="expenses-list" *ngIf="expenses.length > 0; else noExpenses">
+    <table>
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Descrição</th>
+          <th>Categoria</th>
+          <th>Valor</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let expense of expenses">
+          <td>{{expense.date | date:'dd/MM/yyyy'}}</td>
+          <td>{{expense.description}}</td>
+          <td>{{expense.category}}</td>
+          <td class="amount">R$ {{expense.amount | number:'1.2-2'}}</td>
+          <td class="actions">
+            <button (click)="onEditExpense(expense)" class="edit-button">
+              Editar
+            </button>
+            <button (click)="onDeleteExpense(expense.id!)" class="delete-button">
+              Excluir
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #noExpenses>
+    <div class="no-expenses">
+      <p>Nenhuma despesa cadastrada.</p>
+    </div>
+  </ng-template>
+</div>

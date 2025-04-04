@@ -1,1 +1,35 @@
-<p>expense-form works!</p>
+<form [formGroup]="expenseForm" (ngSubmit)="onSubmit()" class="expense-form">
+  <div class="form-field">
+    <label for="description">Descrição</label>
+    <input id="description" type="text" formControlName="description" placeholder="Digite a descrição">
+  </div>
+
+  <div class="form-field">
+    <label for="amount">Valor</label>
+    <input id="amount" type="number" formControlName="amount" placeholder="0.00" step="0.01">
+  </div>
+
+  <div class="form-field">
+    <label for="date">Data</label>
+    <input id="date" type="date" formControlName="date">
+  </div>
+
+  <div class="form-field">
+    <label for="category">Categoria</label>
+    <select id="category" formControlName="category">
+      <option value="">Selecione uma categoria</option>
+      <option *ngFor="let category of categories" [value]="category">
+        {{category}}
+      </option>
+    </select>
+  </div>
+
+  <div class="form-field">
+    <label for="notes">Observações</label>
+    <textarea id="notes" formControlName="notes" placeholder="Observações adicionais"></textarea>
+  </div>
+
+  <button type="submit" [disabled]="!expenseForm.valid">
+    {{ expense ? 'Atualizar' : 'Adicionar' }} Despesa
+  </button>
+</form>
