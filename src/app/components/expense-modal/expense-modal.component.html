@@ -1,0 +1,35 @@
+<div class="modal-overlay" *ngIf="isOpen" (click)="close()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Despesas de {{ monthName }}</h2>
+      <button class="close-button" (click)="close()">×</button>
+    </div>
+    
+    <div class="modal-body">
+      <div class="total-summary">
+        <p>Total de despesas: <strong>{{ getTotalAmount() | currency:'BRL' }}</strong></p>
+        <p>Quantidade: <strong>{{ expenses.length }}</strong></p>
+      </div>
+      
+      <div class="expenses-list" *ngIf="expenses.length > 0">
+        <div class="expense-item" *ngFor="let expense of expenses">
+          <div class="expense-info">
+            <h3>{{ expense.description }}</h3>
+            <p>
+              <span class="category">{{ expense.category }}</span>
+              <span class="date">{{ formatDate(expense.date) }}</span>
+            </p>
+            <p class="notes" *ngIf="expense.notes">{{ expense.notes }}</p>
+          </div>
+          <div class="expense-amount">
+            {{ expense.amount | currency:'BRL' }}
+          </div>
+        </div>
+      </div>
+      
+      <div class="no-expenses" *ngIf="expenses.length === 0">
+        <p>Nenhuma despesa registrada para este mês.</p>
+      </div>
+    </div>
+  </div>
+</div> 

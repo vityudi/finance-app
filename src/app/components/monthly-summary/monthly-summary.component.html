@@ -4,7 +4,8 @@
   <div class="months-grid">
     <div *ngFor="let month of monthlyTotals" 
          class="month-card"
-         [class.current-month]="isCurrentMonth(month.monthNumber)">
+         [class.current-month]="isCurrentMonth(month.monthNumber)"
+         (click)="openMonthModal(month)">
       <div class="month-header">
         {{month.monthName}}
       </div>
@@ -18,4 +19,11 @@
       </div>
     </div>
   </div>
-</div> 
+</div>
+
+<app-expense-modal
+  [isOpen]="isModalOpen"
+  [monthName]="selectedMonthName"
+  [expenses]="selectedMonthExpenses"
+  (closeModal)="closeModal()">
+</app-expense-modal> 

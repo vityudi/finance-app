@@ -22,17 +22,28 @@
     background-color: var(--gray-100);
     border-radius: var(--border-radius-md);
     overflow: hidden;
-    transition: transform 0.2s ease-in-out;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     box-shadow: var(--shadow-sm);
+    cursor: pointer;
 
     &:hover {
       transform: translateY(-2px);
       box-shadow: var(--shadow-md);
+      background-color: var(--gray-200);
+
+      .month-header {
+        background-color: var(--primary-dark);
+      }
     }
 
     &.current-month {
       background-color: var(--primary-light);
       border: 1px solid var(--primary-color);
+
+      &:hover {
+        background-color: var(--primary-light);
+        border-color: var(--primary-dark);
+      }
     }
   }
 
@@ -42,6 +53,7 @@
     padding: var(--spacing-sm);
     text-align: center;
     font-weight: 500;
+    transition: background-color 0.2s ease-in-out;
   }
 
   .month-content {
