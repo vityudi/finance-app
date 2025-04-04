@@ -1,6 +1,15 @@
 <div class="expenses-container">
   <div class="header">
     <h1>Minhas Despesas</h1>
+    <div class="excel-actions">
+      <button class="export-btn" (click)="exportToExcel()">
+        <i class="fas fa-file-excel"></i> Exportar Excel
+      </button>
+      <label class="import-btn">
+        <i class="fas fa-file-import"></i> Importar Excel
+        <input type="file" accept=".xlsx" (change)="importFromExcel($event)" style="display: none;">
+      </label>
+    </div>
   </div>
 
   <app-monthly-summary></app-monthly-summary>

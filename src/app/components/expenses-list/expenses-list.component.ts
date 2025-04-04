@@ -59,6 +59,7 @@ export class ExpensesListComponent implements OnInit {
   deleteExpense(id: string): void {
     if (confirm('Tem certeza que deseja excluir esta despesa?')) {
       this.expenseService.deleteExpense(id);
+      this.loadExpenses();
     }
   }
 
@@ -75,5 +76,31 @@ export class ExpensesListComponent implements OnInit {
     this.expenseService.updateExpense(updatedExpense);
     this.closeEditModal();
     this.loadExpenses();
+  }
+
+  // Exportar despesas para Excel
+  exportToExcel(): void {
+    this.expenseService.exportToExcel();
+  }
+
+  // Importar despesas de um arquivo Excel
+  importFromExcel(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      
+      this.expenseService.importFromExcel(file)
+        .then(() => {
+          this.loadExpenses();
+          alert('Despesas importadas com sucesso!');
+        })
+        .catch(error => {
+          console.error('Erro ao importar despesas:', error);
+          alert('Erro ao importar despesas. Verifique o formato do arquivo.');
+        });
+      
+      // Limpar o input para permitir importar o mesmo arquivo novamente
+      input.value = '';
+    }
   }
 }
