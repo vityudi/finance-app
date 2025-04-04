@@ -1,6 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Expense } from '../../models/expense.model';
 import { ExpenseService } from '../../services/expense.service';
 import { CommonModule } from '@angular/common';
 
@@ -12,7 +11,6 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule, ReactiveFormsModule]
 })
 export class ExpenseFormComponent implements OnInit {
-  @Input() expense?: Expense;
   @Output() expenseSaved = new EventEmitter<void>();
 
   expenseForm: FormGroup;
@@ -34,30 +32,18 @@ export class ExpenseFormComponent implements OnInit {
   ngOnInit(): void {
     this.categories = this.expenseService.getCategories();
     
-    if (this.expense) {
-      this.expenseForm.patchValue(this.expense);
-    } else {
-      // Definir data padrão como hoje
-      this.expenseForm.patchValue({
-        date: new Date().toISOString().split('T')[0]
-      });
-    }
+    // Definir data padrão como hoje
+    this.expenseForm.patchValue({
+      date: new Date().toISOString().split('T')[0]
+    });
   }
 
   onSubmit(): void {
     if (this.expenseForm.valid) {
       const formValue = this.expenseForm.value;
       
-      if (this.expense) {
-        // Atualizar despesa existente
-        this.expenseService.updateExpense({
-          ...this.expense,
-          ...formValue
-        });
-      } else {
-        // Adicionar nova despesa
-        this.expenseService.addExpense(formValue);
-      }
+      // Adicionar nova despesa
+      this.expenseService.addExpense(formValue);
       
       this.expenseForm.reset();
       this.expenseForm.patchValue({

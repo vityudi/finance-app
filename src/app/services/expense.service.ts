@@ -8,31 +8,36 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class ExpenseService {
   private readonly STORAGE_KEY = 'expenses';
-  private expensesSubject = new BehaviorSubject<Expense[]>([]);
-  expenses$ = this.expensesSubject.asObservable();
-  private isBrowser: boolean;
+  private expensesSubject: BehaviorSubject<Expense[]>;
 
-  constructor(@Inject(PLATFORM_ID) platformId: Object) {
-    this.isBrowser = isPlatformBrowser(platformId);
-    if (this.isBrowser) {
-      this.loadExpenses();
-    }
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    this.expensesSubject = new BehaviorSubject<Expense[]>(this.loadExpenses());
   }
 
-  private loadExpenses(): void {
-    if (this.isBrowser) {
+  get expenses$(): Observable<Expense[]> {
+    return this.expensesSubject.asObservable();
+  }
+
+  private loadExpenses(): Expense[] {
+    if (isPlatformBrowser(this.platformId)) {
       const storedExpenses = localStorage.getItem(this.STORAGE_KEY);
       if (storedExpenses) {
-        this.expensesSubject.next(JSON.parse(storedExpenses));
+        const expenses = JSON.parse(storedExpenses);
+        // Converter strings de data de volta para objetos Date
+        return expenses.map((expense: any) => ({
+          ...expense,
+          date: new Date(expense.date)
+        }));
       }
     }
+    return [];
   }
 
   private saveExpenses(expenses: Expense[]): void {
-    if (this.isBrowser) {
+    if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(expenses));
+      this.expensesSubject.next(expenses);
     }
-    this.expensesSubject.next(expenses);
   }
 
   getExpenses(): Observable<Expense[]> {
@@ -40,27 +45,24 @@ export class ExpenseService {
   }
 
   addExpense(expense: Expense): void {
-    const currentExpenses = this.expensesSubject.value;
-    const newExpense = {
-      ...expense,
-      id: Date.now().toString() // Usando timestamp como ID
-    };
-    this.saveExpenses([...currentExpenses, newExpense]);
+    const expenses = this.expensesSubject.value;
+    expenses.push(expense);
+    this.saveExpenses(expenses);
   }
 
-  updateExpense(expense: Expense): void {
-    const currentExpenses = this.expensesSubject.value;
-    const index = currentExpenses.findIndex(e => e.id === expense.id);
+  updateExpense(updatedExpense: Expense): void {
+    const expenses = this.expensesSubject.value;
+    const index = expenses.findIndex(e => e.id === updatedExpense.id);
     if (index !== -1) {
-      const updatedExpenses = [...currentExpenses];
-      updatedExpenses[index] = expense;
-      this.saveExpenses(updatedExpenses);
+      expenses[index] = updatedExpense;
+      this.saveExpenses(expenses);
     }
   }
 
   deleteExpense(id: string): void {
-    const currentExpenses = this.expensesSubject.value;
-    this.saveExpenses(currentExpenses.filter(expense => expense.id !== id));
+    const expenses = this.expensesSubject.value;
+    const filteredExpenses = expenses.filter(expense => expense.id !== id);
+    this.saveExpenses(filteredExpenses);
   }
 
   getCategories(): string[] {

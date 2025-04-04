@@ -1,4 +1,6 @@
 <form [formGroup]="expenseForm" (ngSubmit)="onSubmit()" class="expense-form">
+  <h2>Nova Despesa</h2>
+  
   <div class="form-row">
     <div class="form-field">
       <label for="description">Descrição</label>
@@ -32,8 +34,8 @@
 
     <div class="form-field submit-field">
       <label>&nbsp;</label>
-      <button type="submit" [disabled]="!expenseForm.valid">
-        {{ expense ? 'Atualizar' : 'Adicionar' }} Despesa
+      <button type="submit" class="submit-button" [disabled]="!expenseForm.valid">
+        Adicionar Despesa
       </button>
     </div>
   </div>

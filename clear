@@ -1,0 +1,41 @@
+[33mcommit 2f8ccede7448a4fee5fd0c9ddab98548a8fd9fb7[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m
+Author: vityudi <vitoryudi.artur@gmail.com>
+Date:   Fri Apr 4 01:21:14 2025 -0300
+
+    add expense-modal
+
+[33mcommit c7d7fd487b2a4059bf5f69940c2a83cc1906901c[m
+Author: vityudi <vitoryudi.artur@gmail.com>
+Date:   Fri Apr 4 01:17:31 2025 -0300
+
+    configure global styles
+
+[33mcommit 9c149b478f59a8a8716592f9924ee3c7fcb78ea5[m
+Author: vityudi <vitoryudi.artur@gmail.com>
+Date:   Fri Apr 4 01:09:27 2025 -0300
+
+    add monthly-summary
+
+[33mcommit e60065d6a9374f962528a892dbcc4b6e1140e9bd[m
+Author: vityudi <vitoryudi.artur@gmail.com>
+Date:   Fri Apr 4 00:32:51 2025 -0300
+
+    Corrige a estrutura do projeto movendo arquivos para a pasta correta
+
+[33mcommit ef6fe657c914a7b6c83a64b42dfcf409991efae5[m
+Author: vityudi <vitoryudi.artur@gmail.com>
+Date:   Fri Apr 4 00:27:05 2025 -0300
+
+    Implementa funcionalidades básicas do app de finanças
+
+[33mcommit 3c21776ed2ac460bd5c064c62aa80473543fd764[m
+Author: vityudi <vitoryudi.artur@gmail.com>
+Date:   Fri Apr 4 00:22:35 2025 -0300
+
+    Initial commit: Project setup with Angular and Firebase
+
+[33mcommit 4e587096499dd0680565693d331ef5be157466fc[m
+Author: vityudi <vitoryudi.artur@gmail.com>
+Date:   Fri Apr 4 00:21:20 2025 -0300
+
+    initial commit

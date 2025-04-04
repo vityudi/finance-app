@@ -20,21 +20,26 @@ html, body {
 
 /* Variáveis de cores globais */
 :root {
-  --primary-color: #2196f3;
-  --primary-light: #e3f2fd;
+  --primary: #2196f3;
+  --primary-rgb: 33, 150, 243;
   --primary-dark: #1976d2;
-  --secondary-color: #4caf50;
-  --secondary-light: #e8f5e9;
+  --primary-light: #e3f2fd;
+  --secondary: #4caf50;
+  --secondary-rgb: 76, 175, 80;
   --secondary-dark: #388e3c;
-  --danger-color: #f44336;
-  --danger-light: #ffebee;
+  --secondary-light: #e8f5e9;
+  --danger: #f44336;
+  --danger-rgb: 244, 67, 54;
   --danger-dark: #d32f2f;
-  --warning-color: #ff9800;
-  --warning-light: #fff3e0;
+  --danger-light: #ffebee;
+  --warning: #ff9800;
+  --warning-rgb: 255, 152, 0;
   --warning-dark: #f57c00;
-  --success-color: #4caf50;
-  --success-light: #e8f5e9;
+  --warning-light: #fff3e0;
+  --success: #4caf50;
+  --success-rgb: 76, 175, 80;
   --success-dark: #388e3c;
+  --success-light: #e8f5e9;
   --gray-100: #f8f9fa;
   --gray-200: #e9ecef;
   --gray-300: #dee2e6;
@@ -101,16 +106,6 @@ p {
   margin-bottom: var(--spacing-md);
 }
 
-a {
-  color: var(--primary-color);
-  text-decoration: none;
-  transition: color 0.3s ease;
-  
-  &:hover {
-    color: var(--primary-dark);
-  }
-}
-
 /* Estilos de botões */
 button {
   font-family: 'Poppins', sans-serif;
@@ -124,22 +119,47 @@ button {
   &:focus {
     outline: none;
   }
+  
+  &:disabled {
+    opacity: 0.7 !important;
+    cursor: not-allowed;
+    visibility: visible !important;
+    display: inline-block !important;
+  }
 }
 
 /* Estilos de formulários */
 input, select, textarea {
   font-family: 'Poppins', sans-serif;
   font-size: 1rem;
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-sm);
   border: 1px solid var(--gray-300);
-  border-radius: var(--border-radius-md);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  border-radius: var(--border-radius-sm);
+  transition: border-color 0.3s ease;
   
   &:focus {
     outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+    border-color: var(--primary);
   }
+}
+
+/* Estilos de links */
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  
+  &:hover {
+    color: var(--primary-dark);
+  }
+}
+
+/* Estilos de containers */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
 }
 
 /* Estilos de cards */
@@ -151,7 +171,7 @@ input, select, textarea {
   margin-bottom: var(--spacing-lg);
 }
 
-/* Utilitários */
+/* Estilos de utilitários */
 .text-center {
   text-align: center;
 }
@@ -176,18 +196,15 @@ input, select, textarea {
 .mb-4 { margin-bottom: var(--spacing-lg); }
 .mb-5 { margin-bottom: var(--spacing-xl); }
 
-/* Responsividade */
+/* Estilos responsivos */
 @media (max-width: 768px) {
   html, body {
     font-size: 14px;
   }
   
-  h1 { font-size: 2rem; }
-  h2 { font-size: 1.75rem; }
-  h3 { font-size: 1.5rem; }
-  h4 { font-size: 1.25rem; }
-  h5 { font-size: 1.1rem; }
-  h6 { font-size: 1rem; }
+  .container {
+    padding: 0 var(--spacing-sm);
+  }
 }
 
 

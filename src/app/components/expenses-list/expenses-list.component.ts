@@ -4,20 +4,24 @@ import { ExpenseService } from '../../services/expense.service';
 import { Expense } from '../../models/expense.model';
 import { ExpenseFormComponent } from '../expense-form/expense-form.component';
 import { MonthlySummaryComponent } from '../monthly-summary/monthly-summary.component';
+import { ExpenseEditModalComponent } from '../expense-edit-modal/expense-edit-modal.component';
 
 @Component({
   selector: 'app-expenses-list',
   templateUrl: './expenses-list.component.html',
   styleUrls: ['./expenses-list.component.scss'],
   standalone: true,
-  imports: [CommonModule, ExpenseFormComponent, MonthlySummaryComponent]
+  imports: [CommonModule, ExpenseFormComponent, MonthlySummaryComponent, ExpenseEditModalComponent]
 })
 export class ExpensesListComponent implements OnInit {
   expenses: Expense[] = [];
   categories: string[] = [];
   selectedCategory: string = '';
   totalAmount: number = 0;
-  editingExpense?: Expense;
+  
+  // Propriedades para o modal de edição
+  isEditModalOpen = false;
+  editingExpense: Expense | null = null;
 
   constructor(private expenseService: ExpenseService) {
     this.categories = this.expenseService.getCategories();
@@ -49,6 +53,7 @@ export class ExpensesListComponent implements OnInit {
 
   onEditExpense(expense: Expense): void {
     this.editingExpense = expense;
+    this.isEditModalOpen = true;
   }
 
   deleteExpense(id: string): void {
@@ -58,7 +63,17 @@ export class ExpensesListComponent implements OnInit {
   }
 
   onExpenseSaved(): void {
-    this.editingExpense = undefined;
+    this.loadExpenses();
+  }
+  
+  closeEditModal(): void {
+    this.isEditModalOpen = false;
+    this.editingExpense = null;
+  }
+  
+  saveEditedExpense(updatedExpense: Expense): void {
+    this.expenseService.updateExpense(updatedExpense);
+    this.closeEditModal();
     this.loadExpenses();
   }
 }

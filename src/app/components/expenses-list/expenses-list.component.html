@@ -6,7 +6,6 @@
   <app-monthly-summary></app-monthly-summary>
 
   <app-expense-form
-    [expense]="editingExpense"
     (expenseSaved)="onExpenseSaved()"
   ></app-expense-form>
 
@@ -53,3 +52,10 @@
     </div>
   </ng-template>
 </div>
+
+<app-expense-edit-modal
+  [isOpen]="isEditModalOpen"
+  [expense]="editingExpense"
+  (closeModal)="closeEditModal()"
+  (saveExpense)="saveEditedExpense($event)">
+</app-expense-edit-modal>
