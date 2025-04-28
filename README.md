@@ -1,3 +1,10 @@
+#dio-lab AI
+Project generated using claude soonet 3.7
+
+![image](https://github.com/user-attachments/assets/819501c1-9d91-44d6-a8ab-c6ee1bcc4487)
+
+
+
 # FinanceApp
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.6.
